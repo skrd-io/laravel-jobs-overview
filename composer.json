@@ -8,7 +8,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "SkrdIo\\LaravelFailedJobSummary\\": "src/"
+            "SkrdIo\\FailedJobSummary\\": "src/"
         }
     },
     "authors": [
@@ -17,5 +17,12 @@
             "email": "joe@skrd.io"
         }
     ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SkrdIo\\FailedJobSummary\\FailedJobSummaryServiceProvider"
+            ]
+        }
+    },
     "minimum-stability": "dev"
 }

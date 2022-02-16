@@ -1,1 +1,1 @@
-# laravel-failed-job-summary
+# laravel-failed-job-summary

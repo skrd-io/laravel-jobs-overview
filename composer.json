@@ -3,7 +3,9 @@
     "description": "Get a scheduled summary of failed jobs",
     "require": {
         "php": "^7.1|^8.0",
-        "illuminate/support": "^5.8|^6.0|^7.0|^8.0|^9.0"
+        "illuminate/notifications": "^5.8|^6.0|^7.0|^8.0|^9.0",
+        "illuminate/support": "^5.8|^6.0|^7.0|^8.0|^9.0",
+        "laravel/slack-notification-channel": "^2.0"
     },
     "license": "MIT",
     "autoload": {

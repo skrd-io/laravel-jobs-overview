@@ -1,6 +1,6 @@
 <?php
 
-namespace SkrdIo\FailedJobSummary\Notifications;
+namespace SkrdIo\JobsOverview\Notifications;
 
 use Carbon\Carbon;
 use Illuminate\Notifications\Messages\SlackAttachment;
@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
-class FailedJobSummary extends Notification
+class JobsOverview extends Notification
 {
     public function via(): array
     {

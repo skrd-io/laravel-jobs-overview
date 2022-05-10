@@ -1,11 +1,11 @@
 <?php
 
-namespace SkrdIo\FailedJobSummary;
+namespace SkrdIo\JobsOverview;
 
 use Illuminate\Support\ServiceProvider;
-use SkrdIo\FailedJobSummary\Console\NotifyCommand;
+use SkrdIo\JobsOverview\Console\NotifyCommand;
 
-class FailedJobSummaryServiceProvider extends ServiceProvider
+class JobsOverviewServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
@@ -21,8 +21,8 @@ class FailedJobSummaryServiceProvider extends ServiceProvider
     protected function publishConfigs(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/failed_job_summary.php',
-            'failed_job_summary'
+            __DIR__ . '/../config/jobs_overview.php',
+            'jobs_overview'
         );
     }
 

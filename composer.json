@@ -1,6 +1,6 @@
 {
-    "name": "skrd-io/laravel-failed-job-summary",
-    "description": "Get a scheduled summary of failed jobs",
+    "name": "skrd-io/laravel-jobs-overview",
+    "description": "Get a scheduled overview of jobs",
     "require": {
         "php": "^7.1|^8.0",
         "illuminate/console": "^5.8|^6.0|^7.0|^8.0|^9.0",
@@ -11,7 +11,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "SkrdIo\\FailedJobSummary\\": "src/"
+            "SkrdIo\\JobsOverview\\": "src/"
         }
     },
     "authors": [
@@ -23,7 +23,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "SkrdIo\\FailedJobSummary\\FailedJobSummaryServiceProvider"
+                "SkrdIo\\JobsOverview\\JobsOverviewServiceProvider"
             ]
         }
     },

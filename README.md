@@ -1,3 +1,3 @@
-# laravel-failed-job-summary
+# laravel-jobs-overview
 
-Get a scheduled summary of failed jobs
+Get a scheduled overview of jobs

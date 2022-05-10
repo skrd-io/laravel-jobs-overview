@@ -1,6 +1,6 @@
 <?php
 
-namespace SkrdIo\FailedJobSummary;
+namespace SkrdIo\JobsOverview;
 
 use Illuminate\Notifications\Notifiable as NotifiableTrait;
 use Illuminate\Support\Facades\Config;
@@ -11,6 +11,6 @@ class Notifiable
 
     public function routeNotificationForSlack(): string
     {
-        return Config::get('failed_job_summary.slack.webhook_url');
+        return Config::get('jobs_overview.slack.webhook_url');
     }
 }

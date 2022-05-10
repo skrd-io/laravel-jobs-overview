@@ -79,7 +79,7 @@ class JobsOverview extends Notification
         $query = DB::table(Config::get('queue.failed.table'))
             ->select([
                 DB::raw('JSON_EXTRACT(payload, \'$.displayName\') AS name'),
-                DB::raw('COUNT(*) AS count')
+                DB::raw('COUNT(*) AS count'),
             ])
             ->groupBy('name')
             ->orderByDesc('count');
@@ -87,7 +87,10 @@ class JobsOverview extends Notification
         $ereyesterdayCount = (clone $query)
             ->whereBetween('failed_at', [
                 $now->clone()->subDays(2),
-                $now->clone()->subDay()->subSecond()
+                $now
+                    ->clone()
+                    ->subDay()
+                    ->subSecond(),
             ])
             ->get();
 
@@ -99,21 +102,16 @@ class JobsOverview extends Notification
             ->pluck('name')
             ->merge($ereyesterdayCount->pluck('name'))
             ->unique()
-            ->map(function ($name) use (
-                $yesterdayCount,
-                $ereyesterdayCount
-            ) {
+            ->map(function ($name) use ($yesterdayCount, $ereyesterdayCount) {
                 $yesterday = $yesterdayCount->firstWhere('name', $name);
                 $ereyesterday = $ereyesterdayCount->firstWhere('name', $name);
 
                 return [
                     'name' => str_replace('"', '', stripslashes($name)),
-                    'yesterday_count' => $yesterday !== null
-                        ? $yesterday->count
-                        : 0,
-                    'ereyesterday_count' => $ereyesterday !== null
-                        ? $ereyesterday->count
-                        : 0,
+                    'yesterday_count' =>
+                        $yesterday !== null ? $yesterday->count : 0,
+                    'ereyesterday_count' =>
+                        $ereyesterday !== null ? $ereyesterday->count : 0,
                 ];
             })
             ->sortByDesc('yesterday_count')

@@ -2,6 +2,6 @@
 
 return [
     'slack' => [
-        'webhook_url' => env('JOBS_OVERVIEW_SLACK_WEBHOOK_URL')
-    ]
+        'webhook_url' => env('JOBS_OVERVIEW_SLACK_WEBHOOK_URL'),
+    ],
 ];

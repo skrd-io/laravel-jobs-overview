@@ -11,6 +11,8 @@ class JobsOverviewServiceProvider extends ServiceProvider
     {
         $this->publishConfigs();
         $this->registerCommands();
+
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
 
     public function register(): void

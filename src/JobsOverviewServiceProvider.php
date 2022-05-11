@@ -18,7 +18,7 @@ class JobsOverviewServiceProvider extends ServiceProvider
         //
     }
 
-    protected function publishConfigs(): void
+    private function publishConfigs(): void
     {
         $this->mergeConfigFrom(
             __DIR__ . '/../config/jobs_overview.php',
@@ -26,7 +26,7 @@ class JobsOverviewServiceProvider extends ServiceProvider
         );
     }
 
-    protected function registerCommands(): void
+    private function registerCommands(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([NotifyCommand::class]);

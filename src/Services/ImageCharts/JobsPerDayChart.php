@@ -10,7 +10,55 @@ use SkrdIo\JobsOverview\Models\JobConclusion;
 
 class JobsPerDayChart
 {
-    private function getDates(): array
+    private $data;
+
+    public function __construct()
+    {
+        $this->populateData();
+    }
+
+    private function populateData(): void
+    {
+        $periodDates = $this->getPeriodDates();
+
+        $this->data = array_merge(
+            array_combine(
+                $periodDates,
+                array_map(function ($date) {
+                    return [0, 0];
+                }, $periodDates)
+            ),
+            $this->getConclusionsByDate()
+                ->keyBy('date')
+                ->map(function ($value) {
+                    return [(int) $value['successful'], (int) $value['failed']];
+                })
+                ->toArray()
+        );
+    }
+
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    public function toImageUrl(): string
+    {
+        return 'https://image-charts.com/chart?' .
+            http_build_query([
+                'cht' => 'bvs', // Type
+                'chs' => '999x618', // Size
+                'chd' => $this->getChartData(), // Data
+                'chtt' => 'All jobs per day', // Title
+                'chl' => $this->getChartLabels(), // Labels
+                'chco' => 'f87171,38bdf8', // Colors
+                'chdl' => 'Failed|Successful', // Legend
+                'chxl' => $this->getChartAxisLabels(), // Axis Labels
+                'chxt' => 'x,y', // Visible axes
+            ]);
+    }
+
+    private function getPeriodDates(): array
     {
         $period = CarbonPeriod::since(Carbon::now()->subDays(7))
             ->days(1)
@@ -21,7 +69,7 @@ class JobsPerDayChart
         }, $period->toArray());
     }
 
-    private function getJobConclusions(): Collection
+    private function getConclusionsByDate(): Collection
     {
         return JobConclusion::query()
             ->select(
@@ -41,26 +89,52 @@ class JobsPerDayChart
             ->get();
     }
 
-    public function getData(): array
+    private function getChartData(): string
     {
-        return array_merge(
-            array_combine(
-                $this->getDates(),
-                array_map(function ($date) {
-                    return [0, 0];
-                }, $this->getDates())
-            ),
-            $this->getJobConclusions()
-                ->keyBy('date')
-                ->map(function ($value) {
-                    return [(int) $value['successful'], (int) $value['failed']];
-                })
-                ->toArray()
+        $successful = implode(
+            ',',
+            array_map(function ($value) {
+                return $value[0];
+            }, $this->data)
         );
+
+        $failed = implode(
+            ',',
+            array_map(function ($value) {
+                return $value[1];
+            }, $this->data)
+        );
+
+        return 'a:' . $failed . '|' . $successful;
     }
 
-    public function toImageUrl(): string
+    private function getChartLabels(): string
     {
-        return 'https://image-charts.com/chart?';
+        $successful = implode(
+            '|',
+            array_map(function ($value) {
+                return round(($value[0] / ($value[0] + $value[1])) * 100) . '%';
+            }, $this->data)
+        );
+
+        $failed = implode(
+            '|',
+            array_map(function ($value) {
+                return round(($value[1] / ($value[0] + $value[1])) * 100) . '%';
+            }, $this->data)
+        );
+
+        return $failed . '|' . $successful;
+    }
+
+    private function getChartAxisLabels(): string
+    {
+        return '0:|' .
+            implode(
+                '|',
+                array_map(function ($value) {
+                    return Carbon::parse($value)->format('D j M');
+                }, array_keys($this->data))
+            );
     }
 }

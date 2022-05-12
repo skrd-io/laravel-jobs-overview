@@ -12,7 +12,7 @@ class JobsPerDayChart
 {
     private function getDates(): array
     {
-        $period = CarbonPeriod::since(Carbon::now()->subDays(30))
+        $period = CarbonPeriod::since(Carbon::now()->subDays(7))
             ->days(1)
             ->until(Carbon::now()->subDay());
 
@@ -33,7 +33,7 @@ class JobsPerDayChart
             )
             ->whereBetween('concluded_at', [
                 Carbon::now()
-                    ->subDays(30)
+                    ->subDays(7)
                     ->toDateString(),
                 Carbon::now()->toDateString(),
             ])
